@@ -1,0 +1,70 @@
+<html>
+
+<script type="text/javascript">
+    
+    function createJson(phoneNms, msg){
+    var jsonData = {
+        "phoneNumbers": phoneNms,
+        "message": msg
+    }
+     return jsonData;
+}
+
+function getDataAndCreateJson(phnums, message){
+
+    var jsonString = JSON.stringify(createJson(phnums,message));
+    
+    return jsonString;
+}
+
+function makePostRequest(){
+
+    var phoneNumber1 = document.getElementById("pn1").value;
+    var phoneNumber2 = document.getElementById("pn2").value;
+    var phoneNumber3 = document.getElementById("pn3").value;
+    var message = document.getElementById("msg").value;
+
+    var array = [];
+    array.push(phoneNumber1);
+    array.push(phoneNumber2);
+    array.push(phoneNumber3);
+
+    //console.log(getDataAndCreateJson(array, message));    
+    
+   var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      alert(this.responseText);
+    }else{
+        console.log("error");
+    }
+  };
+  xhttp.open("POST", "http://18.191.151.54/sendSMS/api/v1.0/send_sms", true);
+  xhttp.setRequestHeader("Access-Control-Allow-Origin", true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(getDataAndCreateJson(array, message));
+}
+
+</script>
+<h1> Intview Scheduler </h1>
+<body>
+Enter Phone Number of Interviewer :
+<input id="pn1" value="Contact Number 1"/>
+<br/>
+Enter Phone Number Interviewee:
+<input id="pn2" value="Contact Number 2"/>
+<br/>
+Enter Phone Number of HR :
+<input id="pn3" value="Contact Number 3"/>
+<br/>
+
+
+Enter Message:
+<input id="msg" value="Enter Message"/>
+
+<button id="myBtn" onclick="makePostRequest()">Send</button>
+
+
+</body>
+
+</html>
